@@ -12,20 +12,20 @@ import RxSwift
 
 class LoginModel {
     
-    func registerNewUser(email: String, password: String) -> Observable<Bool> {
+    func registerNewUser(email: String, password: String) -> Observable<FirebaseResponse> {
        return Observable.create { emitter in
             Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
                 if error == nil {
                     authResult?.user.sendEmailVerification(completion: { error in
                         if error == nil {
-                            emitter.onNext(true)
+                            emitter.onNext(FirebaseResponse.CORRECT)
                         } else {
-                            emitter.onNext(false)
+                            emitter.onNext(FirebaseResponse.DEFAULT_ERROR)
                         }
                     })
                 } else {
                     print("error \(error?.localizedDescription as String?)")
-                    emitter.onNext(false)
+                    emitter.onNext(FirebaseResponse.DEFAULT_ERROR)
                 }
             }
         return Disposables.create()
