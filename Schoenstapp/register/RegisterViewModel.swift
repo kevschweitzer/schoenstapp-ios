@@ -9,14 +9,16 @@
 import Foundation
 import RxSwift
 
-class LoginViewModel: ObservableObject {
+class RegisterViewModel: ObservableObject {
     
     @Published var username: String = ""
     @Published var password: String = ""
-    var model = LoginModel()
+    
+    var model = RegisterModel()
  
-    func logIn() {
-        print("written username is \(username)")
+    func clear() {
+        username = ""
+        password = ""
     }
     
     func registerNewUser() -> Observable<FirebaseResponse> {

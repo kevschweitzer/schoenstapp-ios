@@ -8,29 +8,31 @@
 
 /* Begin PBXBuildFile section */
 		841B1791257738DD00A5B4E8 /* FirebaseResponses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841B1790257738DD00A5B4E8 /* FirebaseResponses.swift */; };
+		8454E17925788A9200F86BA9 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8454E17825788A9200F86BA9 /* LoginView.swift */; };
 		84EBC5902573ECFE00947CB4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84EBC58F2573ECFE00947CB4 /* AppDelegate.swift */; };
 		84EBC5922573ECFE00947CB4 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84EBC5912573ECFE00947CB4 /* SceneDelegate.swift */; };
 		84EBC5962573ED0300947CB4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 84EBC5952573ED0300947CB4 /* Assets.xcassets */; };
 		84EBC5992573ED0300947CB4 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 84EBC5982573ED0300947CB4 /* Preview Assets.xcassets */; };
-		84EBC5A62573F57100947CB4 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84EBC5A52573F57100947CB4 /* LoginView.swift */; };
-		84EBC5A82573F6F800947CB4 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84EBC5A72573F6F800947CB4 /* LoginViewModel.swift */; };
+		84EBC5A62573F57100947CB4 /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84EBC5A52573F57100947CB4 /* RegisterView.swift */; };
+		84EBC5A82573F6F800947CB4 /* RegisterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84EBC5A72573F6F800947CB4 /* RegisterViewModel.swift */; };
 		84EBC5AA2574128900947CB4 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 84EBC5A92574128800947CB4 /* GoogleService-Info.plist */; };
-		84F48564257420A500AC1D93 /* LoginModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F48563257420A500AC1D93 /* LoginModel.swift */; };
+		84F48564257420A500AC1D93 /* RegisterModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F48563257420A500AC1D93 /* RegisterModel.swift */; };
 		D9BA8C72595D75DF33331584 /* Pods_Schoenstapp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B39F129E3CCC49EEE25B87E9 /* Pods_Schoenstapp.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		841B1790257738DD00A5B4E8 /* FirebaseResponses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseResponses.swift; sourceTree = "<group>"; };
+		8454E17825788A9200F86BA9 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		84EBC58C2573ECFE00947CB4 /* Schoenstapp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Schoenstapp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		84EBC58F2573ECFE00947CB4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		84EBC5912573ECFE00947CB4 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		84EBC5952573ED0300947CB4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		84EBC5982573ED0300947CB4 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		84EBC59D2573ED0300947CB4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		84EBC5A52573F57100947CB4 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
-		84EBC5A72573F6F800947CB4 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
+		84EBC5A52573F57100947CB4 /* RegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
+		84EBC5A72573F6F800947CB4 /* RegisterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewModel.swift; sourceTree = "<group>"; };
 		84EBC5A92574128800947CB4 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
-		84F48563257420A500AC1D93 /* LoginModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginModel.swift; sourceTree = "<group>"; };
+		84F48563257420A500AC1D93 /* RegisterModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterModel.swift; sourceTree = "<group>"; };
 		A7A9A04097DF9F892799C8DE /* Pods-Schoenstapp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Schoenstapp.debug.xcconfig"; path = "Target Support Files/Pods-Schoenstapp/Pods-Schoenstapp.debug.xcconfig"; sourceTree = "<group>"; };
 		B39F129E3CCC49EEE25B87E9 /* Pods_Schoenstapp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Schoenstapp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DE005609238DD27844105BBF /* Pods-Schoenstapp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Schoenstapp.release.xcconfig"; path = "Target Support Files/Pods-Schoenstapp/Pods-Schoenstapp.release.xcconfig"; sourceTree = "<group>"; };
@@ -82,6 +84,14 @@
 			path = utils;
 			sourceTree = "<group>";
 		};
+		8454E1772578891E00F86BA9 /* login */ = {
+			isa = PBXGroup;
+			children = (
+				8454E17825788A9200F86BA9 /* LoginView.swift */,
+			);
+			path = login;
+			sourceTree = "<group>";
+		};
 		84EBC5832573ECFE00947CB4 = {
 			isa = PBXGroup;
 			children = (
@@ -103,10 +113,11 @@
 		84EBC58E2573ECFE00947CB4 /* Schoenstapp */ = {
 			isa = PBXGroup;
 			children = (
+				8454E1772578891E00F86BA9 /* login */,
 				841B178F257738B800A5B4E8 /* utils */,
 				841B178E2577389100A5B4E8 /* base */,
 				84EBC5A92574128800947CB4 /* GoogleService-Info.plist */,
-				84EBC5A42573F54A00947CB4 /* login */,
+				84EBC5A42573F54A00947CB4 /* register */,
 				84EBC5952573ED0300947CB4 /* Assets.xcassets */,
 				84EBC59D2573ED0300947CB4 /* Info.plist */,
 				84EBC5972573ED0300947CB4 /* Preview Content */,
@@ -122,14 +133,14 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
-		84EBC5A42573F54A00947CB4 /* login */ = {
+		84EBC5A42573F54A00947CB4 /* register */ = {
 			isa = PBXGroup;
 			children = (
-				84EBC5A52573F57100947CB4 /* LoginView.swift */,
-				84EBC5A72573F6F800947CB4 /* LoginViewModel.swift */,
-				84F48563257420A500AC1D93 /* LoginModel.swift */,
+				84EBC5A52573F57100947CB4 /* RegisterView.swift */,
+				84EBC5A72573F6F800947CB4 /* RegisterViewModel.swift */,
+				84F48563257420A500AC1D93 /* RegisterModel.swift */,
 			);
-			path = login;
+			path = register;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -248,11 +259,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				84EBC5902573ECFE00947CB4 /* AppDelegate.swift in Sources */,
+				8454E17925788A9200F86BA9 /* LoginView.swift in Sources */,
 				841B1791257738DD00A5B4E8 /* FirebaseResponses.swift in Sources */,
-				84F48564257420A500AC1D93 /* LoginModel.swift in Sources */,
+				84F48564257420A500AC1D93 /* RegisterModel.swift in Sources */,
 				84EBC5922573ECFE00947CB4 /* SceneDelegate.swift in Sources */,
-				84EBC5A62573F57100947CB4 /* LoginView.swift in Sources */,
-				84EBC5A82573F6F800947CB4 /* LoginViewModel.swift in Sources */,
+				84EBC5A62573F57100947CB4 /* RegisterView.swift in Sources */,
+				84EBC5A82573F6F800947CB4 /* RegisterViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

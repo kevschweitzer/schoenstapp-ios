@@ -10,7 +10,7 @@ import Foundation
 import Firebase
 import RxSwift
 
-class LoginModel {
+class RegisterModel {
     
     func registerNewUser(email: String, password: String) -> Observable<FirebaseResponse> {
        return Observable.create { emitter in
