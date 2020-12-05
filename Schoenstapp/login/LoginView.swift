@@ -42,6 +42,9 @@ struct LoginView: View {
                 NavigationLink(destination: RegisterView()) {
                     Text("Sign up!")
                 }.padding(.top)
+                NavigationLink(destination: ForgotPasswordView()) {
+                    Text("Forgot your password?")
+                }.padding(.top)
             }.alert(isPresented: $showLoginError) {
                 Alert(
                     title: Text("Something went wrong"),
