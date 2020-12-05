@@ -22,6 +22,11 @@ class RegisterModel {
                         } else {
                             emitter.onNext(FirebaseResponse.DEFAULT_ERROR)
                         }
+                        do {
+                            try Auth.auth().signOut()
+                        } catch {
+                            print("Error")
+                        }
                     })
                 } else {
                     print("error \(error?.localizedDescription as String?)")
