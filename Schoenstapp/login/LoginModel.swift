@@ -30,4 +30,8 @@ class LoginModel {
             return Disposables.create()
         }
     }
+    
+    func getCurrentUserId() -> String? {
+        return Auth.auth().currentUser?.uid
+    }
 }

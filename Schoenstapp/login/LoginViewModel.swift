@@ -13,8 +13,15 @@ class LoginViewModel: ObservableObject {
     
     @Published var username: String = ""
     @Published var password: String = ""
-    
+    @Published var loginCorrect = false
+
     let model = LoginModel()
+    
+    init() {
+        if model.getCurrentUserId() != nil {
+            loginCorrect = true
+        }
+    }
     
     func login() -> Observable<FirebaseResponse> {
         return model.login(user: username, password: password)
