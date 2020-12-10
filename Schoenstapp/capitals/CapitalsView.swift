@@ -7,11 +7,15 @@
 //
 
 import SwiftUI
+import RxSwift
 
 struct CapitalsView: View {
     @State var showCreateAlert = false
     @State var showJoinAlert = false
+    @State var showResponse = false
+    @State var responseMessage = ""
     @ObservedObject var viewModel = CapitalsViewModel()
+    var disposeBag = DisposeBag()
 
     var body: some View {
         ZStack {
@@ -28,7 +32,13 @@ struct CapitalsView: View {
             text: $viewModel.urnName,
             title: "Create Urn",
             buttonText: "Create") {
-                self.viewModel.createUrn()
+                let disposable = self.viewModel.createUrn().subscribe(onNext: { response in
+                    switch response {
+                        case .CORRECT: self.showResponseMessage(message: "Urn created successfully"  )
+                        case .DEFAULT_ERROR: self.showResponseMessage(message: "Error creating urn. Try again")
+                    }
+                })
+                self.disposeBag.insert(disposable)
             }
         .textFieldAlert(
             isShowing: $showJoinAlert,
@@ -37,6 +47,14 @@ struct CapitalsView: View {
             buttonText: "Join") {
                 self.viewModel.joinUrn()
             }
+        .alert(isPresented: $showResponse) {
+            Alert(title: Text(responseMessage), dismissButton: .default(Text("OK")))
+        }
+    }
+    
+    func showResponseMessage(message: String) {
+        self.showResponse = true
+        self.responseMessage = message
     }
 }
 
@@ -45,4 +63,3 @@ struct CapitalsView_Previews: PreviewProvider {
         CapitalsView()
     }
 }
-
