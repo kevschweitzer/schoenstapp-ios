@@ -21,9 +21,11 @@ struct FloatingMenu: View {
                 if showButtons {
                     FloatingButton(text: "Join") {
                         self.onJoinClicked()
+                        self.showButtons = false
                     }
                     FloatingButton(text: "Create") {
                         self.onCreateClicked()
+                        self.showButtons = false
                     }
                 }
                 Button(action: {

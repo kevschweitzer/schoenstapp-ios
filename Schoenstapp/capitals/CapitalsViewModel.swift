@@ -13,9 +13,24 @@ class CapitalsViewModel: ObservableObject {
     
     @Published var urnName: String = ""
     private var model = CapitalsModel()
+    @Published var urns = Array<CapitalEntity>()
+    var disposeBag = DisposeBag()
+    
+    init() {
+        getUrns()
+    }
+    
+    func getUrns() {
+        let disposable = model.getCapitalUrns().subscribe(onNext: { result in
+            self.urns = result
+        })
+        disposeBag.insert(disposable)
+    }
     
     func createUrn() -> Observable<FirebaseResponse> {
-        return model.createUrn(urnName: urnName)
+        return model.createUrn(urnName: urnName).do(onCompleted: {
+            self.getUrns()
+        })
     }
     
     func joinUrn() {

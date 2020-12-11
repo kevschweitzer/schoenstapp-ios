@@ -52,6 +52,41 @@ class CapitalsModel {
                         emitter.onNext(FirebaseResponse.CORRECT)
                         print("Transaction successfully committed!")
                     }
+                    emitter.onCompleted()
+                }
+            }
+            return Disposables.create()
+        }
+    }
+    
+    func getCapitalUrns() -> Observable<Array<CapitalEntity>> {
+        return Observable.create { emitter in
+            self.usersCapitals.whereField(Constants.USER_ID_FIELD, isEqualTo: self.userId!).getDocuments { querySnapshot, error in
+                var urns = Array<CapitalEntity>()
+                if querySnapshot?.isEmpty == false {
+                    let ownedCapitalsIds = querySnapshot?.documents[0].get(Constants.OWNED_IDS_FIELD) as! Array<String>
+                    if(ownedCapitalsIds.isEmpty == false) {
+                        ownedCapitalsIds.forEach { capitalId in
+                            self.capitals.document(capitalId).getDocument() { document, error in
+                                if(error == nil) {
+                                    urns.append(
+                                        CapitalEntity(
+                                            id: document!.documentID,
+                                            name: document!.get("name") as! String,
+                                            ownerId: document!.get("ownerId") as! String,
+                                            password: document!.get("password") as! String,
+                                            capitals: document!.get("capitals") as! Int
+                                        )
+                                    )
+                                }
+                                emitter.onNext(urns)
+                            }
+                        }
+                    } else {
+                        emitter.onNext(urns)
+                    }
+                } else {
+                    emitter.onNext(urns)
                 }
             }
             return Disposables.create()
@@ -59,7 +94,8 @@ class CapitalsModel {
     }
 }
 
-struct CapitalEntity {
+struct CapitalEntity: Identifiable {
+    var id: String
     var name: String
     var ownerId: String
     var password: String = ""

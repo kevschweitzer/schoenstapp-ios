@@ -19,6 +19,9 @@ struct CapitalsView: View {
 
     var body: some View {
         ZStack {
+            List(viewModel.urns) { urn in
+                Text(urn.name)
+            }
             FloatingMenu(
                 onCreateClicked: {
                     self.showCreateAlert = true
@@ -34,7 +37,7 @@ struct CapitalsView: View {
             buttonText: "Create") {
                 let disposable = self.viewModel.createUrn().subscribe(onNext: { response in
                     switch response {
-                        case .CORRECT: self.showResponseMessage(message: "Urn created successfully"  )
+                        case .CORRECT: self.showResponseMessage(message: "Urn created successfully")
                         case .DEFAULT_ERROR: self.showResponseMessage(message: "Error creating urn. Try again")
                     }
                 })
