@@ -39,7 +39,9 @@ class CapitalsViewModel: ObservableObject {
         })
     }
     
-    func joinUrn() {
-        
+    func joinUrn() -> Observable<FirebaseResponse> {
+        return model.joinUrn(urnId: urnName).do(onCompleted: {
+            self.getUrns()
+        })
     }
 }

@@ -64,7 +64,9 @@ class CapitalsModel {
             self.usersCapitals.whereField(Constants.USER_ID_FIELD, isEqualTo: self.userId!).getDocuments { querySnapshot, error in
                 var urns = Array<CapitalEntity>()
                 if querySnapshot?.isEmpty == false {
-                    let ownedCapitalsIds = querySnapshot?.documents[0].get(Constants.OWNED_IDS_FIELD) as! Array<String>
+                    var ownedCapitalsIds = querySnapshot?.documents[0].get(Constants.OWNED_IDS_FIELD) as! Array<String>
+                    let joinedCapitalsIds = querySnapshot?.documents[0].get(Constants.JOINED_IDS_FIELD) as! Array<String>
+                    ownedCapitalsIds.append(contentsOf: joinedCapitalsIds)
                     if(ownedCapitalsIds.isEmpty == false) {
                         ownedCapitalsIds.forEach { capitalId in
                             self.capitals.document(capitalId).getDocument() { document, error in
@@ -111,6 +113,45 @@ class CapitalsModel {
                     return nil
                 })
                 { transaction, error in
+                    if let error = error {
+                        emitter.onNext(FirebaseResponse.DEFAULT_ERROR)
+                        print("Transaction failed: \(error)")
+                    } else {
+                        emitter.onNext(FirebaseResponse.CORRECT)
+                        print("Transaction successfully committed!")
+                    }
+                    emitter.onCompleted()
+                }
+            }
+            return Disposables.create()
+        }
+    }
+    
+    func joinUrn(urnId: String) -> Observable<FirebaseResponse> {
+        return Observable.create { emitter in
+            self.usersCapitals.whereField(Constants.USER_ID_FIELD, isEqualTo: self.userId!).getDocuments { querySnapshot, error in
+                self.db.runTransaction({ transaction, error in
+                    if querySnapshot?.isEmpty != false {
+                        let newUserCapital = self.usersCapitals.document()
+                        transaction.setData([
+                            "userId": self.userId!,
+                            "ownedIds": Array<String>(),
+                            "joinedIds": Array<String>(arrayLiteral: urnId)
+                        ], forDocument: newUserCapital)
+                    } else {
+                        let userCapital = querySnapshot?.documents[0]
+                        let ownedList = userCapital?.get(Constants.OWNED_IDS_FIELD) as! Array<String>
+                        var joinedList = userCapital?.get(Constants.JOINED_IDS_FIELD) as! Array<String>
+                        if( !joinedList.contains(urnId) && !ownedList.contains(urnId)) {
+                            joinedList.append(urnId)
+                            transaction.updateData([
+                                "joinedIds": joinedList
+                            ], forDocument: userCapital!.reference)
+                        }
+                        
+                    }
+                    return nil
+                }) { transaction, error in
                     if let error = error {
                         emitter.onNext(FirebaseResponse.DEFAULT_ERROR)
                         print("Transaction failed: \(error)")

@@ -70,7 +70,13 @@ struct CapitalsView: View {
             text: $viewModel.urnName,
             title: "Join Urn",
             buttonText: "Join") {
-                self.viewModel.joinUrn()
+                let disposable = self.viewModel.joinUrn().subscribe(onNext: { response in
+                    switch response {
+                        case .CORRECT: self.showResponseMessage(message: "Joined urn successfully")
+                        case .DEFAULT_ERROR: self.showResponseMessage(message: "Error joining urn. Try again")
+                    }
+                })
+                self.disposeBag.insert(disposable)
             }
         .alert(isPresented: $showResponse) {
             Alert(title: Text(responseMessage), dismissButton: .default(Text("OK")))

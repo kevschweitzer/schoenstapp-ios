@@ -52,6 +52,7 @@ struct TextFieldAlert<Presenting>: View where Presenting: View {
                         Button(action: {
                             withAnimation {
                                 self.isShowing.toggle()
+                                self.text = ""
                             }
                         }) {
                             Text("Dismiss")
