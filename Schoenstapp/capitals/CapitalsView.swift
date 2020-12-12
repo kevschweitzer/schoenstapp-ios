@@ -25,28 +25,7 @@ struct CapitalsView: View {
                 HStack {
                     Text(urn.name)
                     Spacer()
-                    Button(action: {
-                        self.urnToBeDeletedOrExited = urn
-                    }){
-                        if(urn.amIOwner) {
-                            Text("Delete")
-                        } else {
-                            Text("Exit")
-                        }
-                    }
-                    .foregroundColor(Color.red)
-                    .alert(item: self.$urnToBeDeletedOrExited) { urn in
-                        Alert(
-                            title: urn.amIOwner ? Text("Are you sure you want to delete?") : Text("Are you sure you want to exit?"),
-                            primaryButton: .default(Text("Dismiss")),
-                            secondaryButton: .default(
-                                Text("Confirm"),
-                                action: {
-                                    urn.amIOwner ? self.deleteUrn(urn: urn) : self.exitUrn(urn: urn)
-                                }
-                            )
-                        )
-                    }
+                    self.getDeleteButton(urn: urn)
                 }
             }
             FloatingMenu(
@@ -106,6 +85,32 @@ struct CapitalsView: View {
             }
         })
         self.disposeBag.insert(disposable)
+    }
+    
+    func getDeleteButton(urn: CapitalEntity) -> some View {
+        return
+            Button(action: {
+                self.urnToBeDeletedOrExited = urn
+            }){
+                if(urn.amIOwner) {
+                    Text("Delete")
+                } else {
+                    Text("Exit")
+                }
+            }
+            .foregroundColor(Color.red)
+            .alert(item: self.$urnToBeDeletedOrExited) { urn in
+                Alert(
+                    title: urn.amIOwner ? Text("Are you sure you want to delete?") : Text("Are you sure you want to exit?"),
+                    primaryButton: .default(Text("Dismiss")),
+                    secondaryButton: .default(
+                        Text("Confirm"),
+                        action: {
+                            urn.amIOwner ? self.deleteUrn(urn: urn) : self.exitUrn(urn: urn)
+                        }
+                    )
+                )
+            }
     }
     
     func showResponseMessage(message: String) {
