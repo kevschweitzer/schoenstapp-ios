@@ -14,6 +14,7 @@ struct CapitalsView: View {
     @State var showJoinAlert = false
     @State var showResponse = false
     @State var showDeleteDialog = false
+    @State var urnToBeDeletedOrExited: CapitalEntity? = nil
     @State var responseMessage = ""
     @ObservedObject var viewModel = CapitalsViewModel()
     var disposeBag = DisposeBag()
@@ -24,54 +25,28 @@ struct CapitalsView: View {
                 HStack {
                     Text(urn.name)
                     Spacer()
-                    if(urn.amIOwner) {
-                        Button(action: {
-                            self.showDeleteDialog = true
-                        }) {
+                    Button(action: {
+                        self.urnToBeDeletedOrExited = urn
+                    }){
+                        if(urn.amIOwner) {
                             Text("Delete")
-                        }.foregroundColor(Color.red)
-                        .alert(isPresented: self.$showDeleteDialog) {
-                                Alert(title: Text("Are you sure you want to delete?"),
-                                    primaryButton: .default(
-                                        Text("Confirm"),
-                                            action: {
-                                                let disposable = self.viewModel.deleteUrn(id: urn.id).subscribe(onNext: { result in
-                                                    switch result {
-                                                        case .CORRECT: self.showResponseMessage(message: "Urn deleted succesfully")
-                                                        case .DEFAULT_ERROR: self.showResponseMessage(message: "Error deleting urn. Try again")
-                                                    }
-                                                })
-                                                self.disposeBag.insert(disposable)
-                                              }
-                                    ),
-                                    secondaryButton: .default(Text("Dismiss"))
-                                )
-                        }
-                    } else {
-                        Button(action: {
-                            self.showDeleteDialog = true
-                        }) {
+                        } else {
                             Text("Exit")
-                        }.foregroundColor(Color.red)
-                        .alert(isPresented: self.$showDeleteDialog) {
-                                Alert(title: Text("Are you sure you want to exit?"),
-                                    primaryButton: .default(
-                                        Text("Confirm"),
-                                            action: {
-                                                let disposable = self.viewModel.exitUrn(urnId: urn.id).subscribe(onNext: { result in
-                                                    switch result {
-                                                        case .CORRECT: self.showResponseMessage(message: "Urn exited succesfully")
-                                                        case .DEFAULT_ERROR: self.showResponseMessage(message: "Error exiting urn. Try again")
-                                                    }
-                                                })
-                                                self.disposeBag.insert(disposable)
-                                              }
-                                    ),
-                                    secondaryButton: .default(Text("Dismiss"))
-                                )
                         }
                     }
-                    
+                    .foregroundColor(Color.red)
+                    .alert(item: self.$urnToBeDeletedOrExited) { urn in
+                        Alert(
+                            title: urn.amIOwner ? Text("Are you sure you want to delete?") : Text("Are you sure you want to exit?"),
+                            primaryButton: .default(Text("Dismiss")),
+                            secondaryButton: .default(
+                                Text("Confirm"),
+                                action: {
+                                    urn.amIOwner ? self.deleteUrn(urn: urn) : self.exitUrn(urn: urn)
+                                }
+                            )
+                        )
+                    }
                 }
             }
             FloatingMenu(
@@ -111,6 +86,26 @@ struct CapitalsView: View {
         .alert(isPresented: $showResponse) {
             Alert(title: Text(responseMessage), dismissButton: .default(Text("OK")))
         }
+    }
+    
+    func deleteUrn(urn: CapitalEntity) {
+        let disposable = self.viewModel.deleteUrn(id: urn.id).subscribe(onNext: { result in
+            switch result {
+                case .CORRECT: self.showResponseMessage(message: "Urn deleted succesfully")
+                case .DEFAULT_ERROR: self.showResponseMessage(message: "Error deleting urn. Try again")
+            }
+        })
+        self.disposeBag.insert(disposable)
+    }
+    
+    func exitUrn(urn: CapitalEntity) {
+        let disposable = self.viewModel.exitUrn(urnId: urn.id).subscribe(onNext: { result in
+            switch result {
+                case .CORRECT: self.showResponseMessage(message: "Urn exited succesfully")
+                case .DEFAULT_ERROR: self.showResponseMessage(message: "Error exiting urn. Try again")
+            }
+        })
+        self.disposeBag.insert(disposable)
     }
     
     func showResponseMessage(message: String) {
