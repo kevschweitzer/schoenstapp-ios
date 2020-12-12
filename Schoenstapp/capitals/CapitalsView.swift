@@ -24,24 +24,54 @@ struct CapitalsView: View {
                 HStack {
                     Text(urn.name)
                     Spacer()
-                    Button(action: {
-                        self.showDeleteDialog = true
-                    }) {
-                        Text("Delete")
-                    }.foregroundColor(Color.red)
+                    if(urn.amIOwner) {
+                        Button(action: {
+                            self.showDeleteDialog = true
+                        }) {
+                            Text("Delete")
+                        }.foregroundColor(Color.red)
                         .alert(isPresented: self.$showDeleteDialog) {
-                            Alert(title: Text("Are you sure you want to delete?"),
-                                  primaryButton: .default(Text("Confirm"), action: {
-                                    let disposable = self.viewModel.deleteUrn(id: urn.id).subscribe(onNext: { result in
-                                        switch result {
-                                            case .CORRECT: self.showResponseMessage(message: "Urn deleted succesfully")
-                                            case .DEFAULT_ERROR: self.showResponseMessage(message: "Error deleting urn. Try again")
-                                        }
-                                    })
-                                    self.disposeBag.insert(disposable)
-                                  }),
-                                  secondaryButton: .default(Text("Dismiss")) )
+                                Alert(title: Text("Are you sure you want to delete?"),
+                                    primaryButton: .default(
+                                        Text("Confirm"),
+                                            action: {
+                                                let disposable = self.viewModel.deleteUrn(id: urn.id).subscribe(onNext: { result in
+                                                    switch result {
+                                                        case .CORRECT: self.showResponseMessage(message: "Urn deleted succesfully")
+                                                        case .DEFAULT_ERROR: self.showResponseMessage(message: "Error deleting urn. Try again")
+                                                    }
+                                                })
+                                                self.disposeBag.insert(disposable)
+                                              }
+                                    ),
+                                    secondaryButton: .default(Text("Dismiss"))
+                                )
+                        }
+                    } else {
+                        Button(action: {
+                            self.showDeleteDialog = true
+                        }) {
+                            Text("Exit")
+                        }.foregroundColor(Color.red)
+                        .alert(isPresented: self.$showDeleteDialog) {
+                                Alert(title: Text("Are you sure you want to exit?"),
+                                    primaryButton: .default(
+                                        Text("Confirm"),
+                                            action: {
+                                                let disposable = self.viewModel.exitUrn(urnId: urn.id).subscribe(onNext: { result in
+                                                    switch result {
+                                                        case .CORRECT: self.showResponseMessage(message: "Urn exited succesfully")
+                                                        case .DEFAULT_ERROR: self.showResponseMessage(message: "Error exiting urn. Try again")
+                                                    }
+                                                })
+                                                self.disposeBag.insert(disposable)
+                                              }
+                                    ),
+                                    secondaryButton: .default(Text("Dismiss"))
+                                )
+                        }
                     }
+                    
                 }
             }
             FloatingMenu(

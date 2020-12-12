@@ -44,4 +44,10 @@ class CapitalsViewModel: ObservableObject {
             self.getUrns()
         })
     }
+    
+    func exitUrn(urnId: String) -> Observable<FirebaseResponse> {
+        return model.exitUrn(urnId: urnId).do(onCompleted: {
+            self.getUrns()
+        })
+    }
 }

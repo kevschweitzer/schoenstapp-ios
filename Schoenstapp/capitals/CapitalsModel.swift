@@ -77,7 +77,8 @@ class CapitalsModel {
                                             name: document!.get("name") as! String,
                                             ownerId: document!.get("ownerId") as! String,
                                             password: document!.get("password") as! String,
-                                            capitals: document!.get("capitals") as! Int
+                                            capitals: document!.get("capitals") as! Int,
+                                            amIOwner: self.userId == document!.get("ownerId") as? String
                                         )
                                     )
                                 }
@@ -108,6 +109,37 @@ class CapitalsModel {
                     self.capitals.document(id).delete()
                     transaction.updateData(
                         ["ownedIds": ownedList],
+                        forDocument: userCapital!.reference
+                    )
+                    return nil
+                })
+                { transaction, error in
+                    if let error = error {
+                        emitter.onNext(FirebaseResponse.DEFAULT_ERROR)
+                        print("Transaction failed: \(error)")
+                    } else {
+                        emitter.onNext(FirebaseResponse.CORRECT)
+                        print("Transaction successfully committed!")
+                    }
+                    emitter.onCompleted()
+                }
+            }
+            return Disposables.create()
+        }
+    }
+    
+    func exitUrn(urnId: String) -> Observable<FirebaseResponse> {
+        return Observable.create { emitter in
+            self.usersCapitals.whereField(Constants.USER_ID_FIELD, isEqualTo: self.userId!).getDocuments { querySnapshot, error in
+                self.db.runTransaction({ transaction, error in
+                    let userCapital = querySnapshot?.documents[0]
+                    var joinedList = userCapital?.get(Constants.JOINED_IDS_FIELD) as! Array<String>
+                    let removeIndex = joinedList.firstIndex(of: urnId)
+                    if removeIndex != nil {
+                        joinedList.remove(at: removeIndex!)
+                    }
+                    transaction.updateData(
+                        ["joinedIds": joinedList],
                         forDocument: userCapital!.reference
                     )
                     return nil
@@ -173,4 +205,5 @@ struct CapitalEntity: Identifiable {
     var ownerId: String
     var password: String = ""
     var capitals: Int = 0
+    var amIOwner: Bool = false
 }
