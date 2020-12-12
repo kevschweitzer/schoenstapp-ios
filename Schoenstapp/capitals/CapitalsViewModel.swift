@@ -33,6 +33,12 @@ class CapitalsViewModel: ObservableObject {
         })
     }
     
+    func deleteUrn(id: String) -> Observable<FirebaseResponse> {
+        return model.deleteCapitalUrn(id: id).do(onCompleted: {
+            self.getUrns()
+        })
+    }
+    
     func joinUrn() {
         
     }
