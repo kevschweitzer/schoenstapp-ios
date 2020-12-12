@@ -203,6 +203,21 @@ class CapitalsModel {
             return Disposables.create()
         }
     }
+    
+    func addCapitalToUrn(urnId: String) -> Observable<Int> {
+        return Observable.create { emitter in
+            self.capitals.document(urnId).getDocument() { document, error in
+                if error == nil && document?.exists == true {
+                    let capitalsQuantity = document!.get("capitals") as! Int + 1
+                    self.capitals.document(urnId).updateData([
+                        "capitals" : capitalsQuantity
+                    ])
+                    emitter.onNext(capitalsQuantity)
+                }
+            }
+            return Disposables.create()
+        }
+    }
 }
 
 struct CapitalEntity: Identifiable {

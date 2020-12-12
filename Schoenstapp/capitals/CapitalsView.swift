@@ -25,7 +25,11 @@ struct CapitalsView: View {
                 HStack {
                     Text(urn.name)
                     Spacer()
+                    Text("\(urn.capitals)")
+                    Spacer()
                     self.getDeleteButton(urn: urn)
+                    Spacer()
+                    self.getAddButton(urn: urn)
                 }
             }
             FloatingMenu(
@@ -98,7 +102,7 @@ struct CapitalsView: View {
                     Text("Exit")
                 }
             }
-            .foregroundColor(Color.red)
+            .buttonStyle(BorderlessButtonStyle())
             .alert(item: self.$urnToBeDeletedOrExited) { urn in
                 Alert(
                     title: urn.amIOwner ? Text("Are you sure you want to delete?") : Text("Are you sure you want to exit?"),
@@ -111,6 +115,18 @@ struct CapitalsView: View {
                     )
                 )
             }
+    }
+    
+    func getAddButton(urn: CapitalEntity) -> some View {
+        return Button(
+            action: {
+                let disposable = self.viewModel.addCapitalToUrn(urnId: urn.id).subscribe()
+                self.disposeBag.insert(disposable)
+            }
+        ) {
+            Text("+")
+        }
+        .buttonStyle(BorderlessButtonStyle())
     }
     
     func showResponseMessage(message: String) {

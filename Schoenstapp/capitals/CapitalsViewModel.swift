@@ -50,4 +50,12 @@ class CapitalsViewModel: ObservableObject {
             self.getUrns()
         })
     }
+    
+    func addCapitalToUrn(urnId: String) -> Observable<Int>{
+        return model.addCapitalToUrn(urnId: urnId).do(onNext: { result in
+            if let index = self.urns.firstIndex(where: {$0.id == urnId}) {
+                self.urns[index].capitals = result
+            }
+        })
+    }
 }
