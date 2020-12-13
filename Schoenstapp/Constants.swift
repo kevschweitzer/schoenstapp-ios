@@ -15,4 +15,5 @@ class Constants {
     static let CURRENT_USER_UID = "current_user_uid"
     static let CAPITALS_COLLECTION_NAME = "capitalarios"
     static let USERS_CAPITALS_COLLECTION_NAME = "users_capitals"
+    static let BASE_SHARE_URL = "https://kevschweitzer.github.io/schoenstappweb"
 }

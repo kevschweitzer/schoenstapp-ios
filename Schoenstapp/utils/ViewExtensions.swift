@@ -16,12 +16,14 @@ extension View {
                         text: Binding<String>,
                         title: String,
                         buttonText: String,
+                        hintText: String,
                         onClick: @escaping () -> ()) -> some View {
         TextFieldAlert(isShowing: isShowing,
                        text: text,
                        presenting: self,
                        title: title,
                        buttonText: buttonText,
+                       hintText: hintText,
                        onClick: onClick)
     }
 }
@@ -33,7 +35,9 @@ struct TextFieldAlert<Presenting>: View where Presenting: View {
     let presenting: Presenting
     let title: String
     let buttonText: String
+    let hintText: String
     let onClick: () -> ()
+
 
     var body: some View {
         GeometryReader { (deviceSize: GeometryProxy) in
@@ -42,7 +46,7 @@ struct TextFieldAlert<Presenting>: View where Presenting: View {
                     .disabled(self.isShowing)
                 VStack {
                     Text(self.title)
-                    TextField("Enter urn name", text: self.$text)
+                    TextField(self.hintText, text: self.$text)
                         .multilineTextAlignment(.leading)
                         .lineLimit(1)
                         .id(self.isShowing)

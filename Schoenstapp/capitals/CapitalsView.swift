@@ -27,6 +27,8 @@ struct CapitalsView: View {
                     Spacer()
                     Text("\(urn.capitals)")
                     Spacer()
+                    self.getShareButton(urn: urn)
+                    Spacer()
                     self.getDeleteButton(urn: urn)
                     Spacer()
                     self.getAddButton(urn: urn)
@@ -44,7 +46,8 @@ struct CapitalsView: View {
             isShowing: $showCreateAlert,
             text: $viewModel.urnName,
             title: "Create Urn",
-            buttonText: "Create") {
+            buttonText: "Create",
+            hintText: "Enter urn name") {
                 let disposable = self.viewModel.createUrn().subscribe(onNext: { response in
                     switch response {
                         case .CORRECT: self.showResponseMessage(message: "Urn created successfully")
@@ -57,7 +60,8 @@ struct CapitalsView: View {
             isShowing: $showJoinAlert,
             text: $viewModel.urnName,
             title: "Join Urn",
-            buttonText: "Join") {
+            buttonText: "Join",
+            hintText: "Enter join link") {
                 let disposable = self.viewModel.joinUrn().subscribe(onNext: { response in
                     switch response {
                         case .CORRECT: self.showResponseMessage(message: "Joined urn successfully")
@@ -125,6 +129,19 @@ struct CapitalsView: View {
             }
         ) {
             Text("+")
+        }
+        .buttonStyle(BorderlessButtonStyle())
+    }
+   
+    func getShareButton(urn: CapitalEntity) -> some View  {
+        return Button(
+            action: {
+                let shareText = "Join my Capital of Grace urn! \(Constants.BASE_SHARE_URL)?\(urn.id)"
+                let av = UIActivityViewController(activityItems: [shareText], applicationActivities: nil)
+                UIApplication.shared.windows.first?.rootViewController?.present(av, animated: true, completion: nil)
+            }
+        ) {
+            Text("Share")
         }
         .buttonStyle(BorderlessButtonStyle())
     }
