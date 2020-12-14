@@ -21,42 +21,61 @@ class CapitalsViewModel: ObservableObject {
     }
     
     func getUrns() {
-        let disposable = model.getCapitalUrns().subscribe(onNext: { result in
-            self.urns = result
-        })
+        let disposable = model.getCapitalUrns()
+            .subscribe(on: ConcurrentDispatchQueueScheduler(qos: .background))
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { result in
+                self.urns = result
+            })
         disposeBag.insert(disposable)
     }
     
     func createUrn() -> Observable<FirebaseResponse> {
-        return model.createUrn(urnName: urnName).do(onCompleted: {
-            self.getUrns()
-        })
+        return model.createUrn(urnName: urnName)
+            .subscribe(on: ConcurrentDispatchQueueScheduler(qos: .background))
+            .observe(on: MainScheduler.instance)
+            .do(onCompleted: {
+                self.getUrns()
+            })
     }
     
     func deleteUrn(id: String) -> Observable<FirebaseResponse> {
-        return model.deleteCapitalUrn(id: id).do(onCompleted: {
-            self.getUrns()
-        })
+        return model.deleteCapitalUrn(id: id)
+            .subscribe(on: ConcurrentDispatchQueueScheduler(qos: .background))
+            .observe(on: MainScheduler.instance)
+            .do(onCompleted: {
+                self.getUrns()
+            })
     }
     
     func joinUrn() -> Observable<FirebaseResponse> {
-        let urnId = urnName.split(separator: "?")[1]
-        return model.joinUrn(urnId: String(urnId)).do(onCompleted: {
-            self.getUrns()
-        })
+        let joinLinkSplit = urnName.split(separator: "?")
+        let urnId = (joinLinkSplit.count > 1) ? String(joinLinkSplit[1]) : "0"
+        return model.joinUrn(urnId: urnId)
+            .subscribe(on: ConcurrentDispatchQueueScheduler(qos: .background))
+            .observe(on: MainScheduler.instance)
+            .do(onCompleted: {
+                self.getUrns()
+            })
     }
     
     func exitUrn(urnId: String) -> Observable<FirebaseResponse> {
-        return model.exitUrn(urnId: urnId).do(onCompleted: {
-            self.getUrns()
-        })
+        return model.exitUrn(urnId: urnId)
+            .subscribe(on: ConcurrentDispatchQueueScheduler(qos: .background))
+            .observe(on: MainScheduler.instance)
+            .do(onCompleted: {
+                self.getUrns()
+            })
     }
     
     func addCapitalToUrn(urnId: String) -> Observable<Int>{
-        return model.addCapitalToUrn(urnId: urnId).do(onNext: { result in
-            if let index = self.urns.firstIndex(where: {$0.id == urnId}) {
-                self.urns[index].capitals = result
-            }
-        })
+        return model.addCapitalToUrn(urnId: urnId)
+            .subscribe(on: ConcurrentDispatchQueueScheduler(qos: .background))
+            .observe(on: MainScheduler.instance)
+            .do(onNext: { result in
+                if let index = self.urns.firstIndex(where: {$0.id == urnId}) {
+                    self.urns[index].capitals = result
+                }
+            })
     }
 }

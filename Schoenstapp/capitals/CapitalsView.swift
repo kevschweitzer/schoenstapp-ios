@@ -19,8 +19,19 @@ struct CapitalsView: View {
     @ObservedObject var viewModel = CapitalsViewModel()
     var disposeBag = DisposeBag()
 
+    init() {
+        UITableView.appearance().backgroundColor = .clear // For tableView
+        UITableViewCell.appearance().backgroundColor = .clear // For tableViewCell
+    }
+    
     var body: some View {
         ZStack {
+            Image("shrine2")
+                .resizable()
+                .edgesIgnoringSafeArea(.top)
+                .edgesIgnoringSafeArea(.leading)
+                .edgesIgnoringSafeArea(.trailing)
+
             List(viewModel.urns) { urn in
                 HStack {
                     Text(urn.name)
@@ -33,7 +44,11 @@ struct CapitalsView: View {
                     Spacer()
                     self.getAddButton(urn: urn)
                 }
+                .padding()
+                .edgesIgnoringSafeArea(.all)
+                .background(Color.white.opacity(0.5))
             }
+            
             FloatingMenu(
                 onCreateClicked: {
                     self.showCreateAlert = true
