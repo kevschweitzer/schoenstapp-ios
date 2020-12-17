@@ -33,7 +33,7 @@ struct CapitalsView: View {
                 .edgesIgnoringSafeArea(.trailing)
             List {
                 ForEach(viewModel.urns) { urn in
-                    NavigationLink(destination: CapitalDetail(urn: urn)) {
+                    NavigationLink(destination: CapitalDetail(viewModel: CapitalDetailViewModel(urn: urn))) {
                         HStack {
                             Text(urn.name)
                             Spacer()
@@ -134,42 +134,6 @@ struct CapitalsView: View {
             }
         })
         self.disposeBag.insert(disposable)
-    }
-    
-    func getDeleteButton(urn: CapitalEntity) -> some View {
-        return
-            Button(action: {
-                self.urnToBeDeletedOrExited = urn
-            }){
-                if let deleteImage = UIImage(systemName: "trash") {
-                    Image(uiImage: deleteImage)
-                }
-            }
-            .buttonStyle(BorderlessButtonStyle())
-            .alert(item: self.$urnToBeDeletedOrExited) { urn in
-                Alert(
-                    title: urn.amIOwner ? Text("Are you sure you want to delete?") : Text("Are you sure you want to exit?"),
-                    primaryButton: .default(Text("Dismiss")),
-                    secondaryButton: .default(
-                        Text("Confirm"),
-                        action: {
-                            urn.amIOwner ? self.deleteUrn(urn: urn) : self.exitUrn(urn: urn)
-                        }
-                    )
-                )
-            }
-    }
-    
-    func getAddButton(urn: CapitalEntity) -> some View {
-        return Button(
-            action: {
-                let disposable = self.viewModel.addCapitalToUrn(urnId: urn.id).subscribe()
-                self.disposeBag.insert(disposable)
-            }
-        ) {
-            Text("+")
-        }
-        .buttonStyle(BorderlessButtonStyle())
     }
    
     func getShareButton(urn: CapitalEntity) -> some View  {

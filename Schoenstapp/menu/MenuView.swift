@@ -11,11 +11,17 @@ import SwiftUI
 struct MenuView: View {
         
     var body: some View {
-        NavigationView {
-            NavigationLink(destination: CapitalsView()) {
-                Text("Capitales de Gracia")
+        ZStack {
+            Image("shrine")
+                .resizable()
+                .edgesIgnoringSafeArea(.all)
+            NavigationView {
+                NavigationLink(destination: CapitalsView()) {
+                    Text("Capitales de Gracia")
+                }
             }
         }
+        
     }
     
 }
