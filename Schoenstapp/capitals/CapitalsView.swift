@@ -31,22 +31,33 @@ struct CapitalsView: View {
                 .edgesIgnoringSafeArea(.top)
                 .edgesIgnoringSafeArea(.leading)
                 .edgesIgnoringSafeArea(.trailing)
-
-            List(viewModel.urns) { urn in
-                HStack {
-                    Text(urn.name)
-                    Spacer()
-                    Text("\(urn.capitals)")
-                    Spacer()
-                    self.getShareButton(urn: urn)
-                    Spacer()
-                    self.getDeleteButton(urn: urn)
-                    Spacer()
-                    self.getAddButton(urn: urn)
+            List {
+                ForEach(viewModel.urns) { urn in
+                    NavigationLink(destination: CapitalDetail(urn: urn)) {
+                        HStack {
+                            Text(urn.name)
+                            Spacer()
+                            self.getShareButton(urn: urn)
+                        }
+                        .padding()
+                        .edgesIgnoringSafeArea(.all)
+                        .listRowBackground(Color.white.opacity(0.3))
+                    }
                 }
-                .padding()
-                .edgesIgnoringSafeArea(.all)
-                .background(Color.white.opacity(0.5))
+                .onDelete(perform: removeUrn)
+                .alert(item: self.$urnToBeDeletedOrExited) { urn in
+                    Alert(
+                        title: urn.amIOwner ? Text("Are you sure you want to delete?") : Text("Are you sure you want to exit?"),
+                        primaryButton: .default(Text("Dismiss")),
+                        secondaryButton: .default(
+                            Text("Confirm"),
+                            action: {
+                                urn.amIOwner ? self.deleteUrn(urn: urn) : self.exitUrn(urn: urn)
+                            }
+                        )
+                    )
+                }
+                .listRowBackground(Color.white.opacity(0.4))
             }
             
             FloatingMenu(
@@ -89,6 +100,21 @@ struct CapitalsView: View {
             Alert(title: Text(responseMessage), dismissButton: .default(Text("OK")))
         }
     }
+
+    func removeUrn(at offsets: IndexSet) {
+        if let index = offsets.first {
+            self.urnToBeDeletedOrExited = viewModel.urns[index]
+        }
+    }
+    
+    func shareUrn(at offsets: IndexSet, index: Int) {
+        if let index = offsets.first {
+            let urn = viewModel.urns[index]
+            let shareText = "Join my Capital of Grace urn! \(Constants.BASE_SHARE_URL)?\(urn.id)"
+            let av = UIActivityViewController(activityItems: [shareText], applicationActivities: nil)
+            UIApplication.shared.windows.first?.rootViewController?.present(av, animated: true, completion: nil)
+        }
+    }
     
     func deleteUrn(urn: CapitalEntity) {
         let disposable = self.viewModel.deleteUrn(id: urn.id).subscribe(onNext: { result in
@@ -115,10 +141,8 @@ struct CapitalsView: View {
             Button(action: {
                 self.urnToBeDeletedOrExited = urn
             }){
-                if(urn.amIOwner) {
-                    Text("Delete")
-                } else {
-                    Text("Exit")
+                if let deleteImage = UIImage(systemName: "trash") {
+                    Image(uiImage: deleteImage)
                 }
             }
             .buttonStyle(BorderlessButtonStyle())
@@ -156,7 +180,9 @@ struct CapitalsView: View {
                 UIApplication.shared.windows.first?.rootViewController?.present(av, animated: true, completion: nil)
             }
         ) {
-            Text("Share")
+            if let shareImage = UIImage(systemName: "square.and.arrow.up") {
+                Image(uiImage: shareImage)
+            }
         }
         .buttonStyle(BorderlessButtonStyle())
     }
